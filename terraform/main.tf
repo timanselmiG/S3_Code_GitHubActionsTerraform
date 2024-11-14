@@ -36,3 +36,15 @@ resource "azurerm_app_service_plan" "sp1" {
     size = "S1"
   }
 }
+
+resource "azurerm_app_service" "website" {
+  name                = var.web_app_name
+  location            = var.location
+  resource_group_name = data.azurerm_resource_group.wsdevops.name
+  app_service_plan_id = azurerm_app_service_plan.sp1.id
+
+  site_config {
+    linux_fx_version = "NODE|22-lts"
+    scm_type         = "LocalGit"
+  }
+}
